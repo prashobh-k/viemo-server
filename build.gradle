@@ -1,0 +1,24 @@
+plugins {
+	id 'java'
+//	id 'org.springframework.boot' version '1.5.22.RELEASE'
+}
+
+group = 'com.heraizen'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:1.5.22.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-web:1.5.22.RELEASE'
+	implementation group: 'com.clickntap', name: 'vimeo', version: '2.0'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:1.5.22.RELEASE'
+}
+
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}
