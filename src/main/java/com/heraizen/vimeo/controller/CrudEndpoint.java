@@ -5,10 +5,7 @@ import com.clickntap.vimeo.VimeoResponse;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -27,18 +24,17 @@ public class CrudEndpoint {
     @ResponseBody
     public String getAllVideos() throws IOException {
         VimeoResponse res = vimeo.getVideos();
-        System.out.println(res);
-
         return res.getJson().toString();
     }
 
     @PostMapping(path="/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
     public String handleFileUpload(@RequestParam("file") MultipartFile multipartfile) throws IOException {
         if (!multipartfile.isEmpty()) {
             File file = getFile(multipartfile);
             String link = getUploadLink(file);
             VimeoResponse res = vimeo.uploadVideo(link, file);
-            return "File uploaded successfully.";
+            return String.valueOf(res.getStatusCode());
         } else {
             return "Failed to upload file.";
         }
@@ -62,6 +58,13 @@ public class CrudEndpoint {
         fos.write( multipartfile.getBytes() );
         fos.close();
         return file;
+    }
+
+    @DeleteMapping("/video")
+    @ResponseBody
+    public String deleteVideo(@PathVariable String id) throws IOException {
+        VimeoResponse res = vimeo.delete(id);
+        return res.getJson().toString();
     }
 
 
